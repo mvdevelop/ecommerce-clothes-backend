@@ -1,5 +1,0 @@
-
-db_userName = marcosvmdilly
-db_password = 12344321
-
-mongodb+srv://marcosvmdilly:<db_password>@cluster0.rteta.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
