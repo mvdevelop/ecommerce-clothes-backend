@@ -2,12 +2,12 @@
   "name": "backend",
   "version": "1.0.0",
   "main": "index.js",
+  "engines": {
+    "node": ">=18.12.0"
+  },
   "scripts": {
     "start": "node index.js",
     "build": "npm run start"
-  },
-  "engines": {
-    "node": ">=18.12.0"
   },
   "author": "",
   "license": "ISC",
