@@ -38,7 +38,8 @@ app.use('/images',express.static('upload/images'));
 app.post("/upload",upload.single('product'),(req, res) => {
     res.json({
         success: 1,
-        image_url:`${url}:${port}/images/${req.file.filename}`
+        // alteração
+        image_url:`${url}/images/${req.file.filename}`
     })
 });
 
