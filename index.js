@@ -9,7 +9,7 @@ const multer = require("multer");
 const path = require("path");
 const cors = require("cors");
 
-const url = https://ecommerce-clothes-backend.onrender.com;
+// const url = https://ecommerce-clothes-backend.onrender.com;
     
 app.use(express.json());
 app.use(cors());
@@ -39,7 +39,7 @@ app.post("/upload",upload.single('product'),(req, res) => {
     res.json({
         success: 1,
         // alteração
-        image_url:`${url}/images/${req.file.filename}`
+        image_url:`http://localhost:${port}/images/${req.file.filename}`
     })
 });
 
