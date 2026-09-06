@@ -56,7 +56,7 @@ const userSchema = new Schema<IUser>(
       default: "user",
     },
     cartData: {
-      type: Object as Schema.Types.Mixed,
+      type: { type: Number, default: 0 },
       default: {},
     },
     wishlist: [
@@ -85,7 +85,7 @@ userSchema.pre("save", async function (next) {
     return next();
   }
   const salt = await bcrypt.genSalt(12);
-  this.password = await bcrypt.hash(this.password, salt);
+  this.set("password", await bcrypt.hash(this.get("password") as string, salt));
   next();
 });
 
@@ -94,7 +94,8 @@ userSchema.methods.matchPassword = async function (
   this: IUser,
   enteredPassword: string
 ): Promise<boolean> {
-  return await bcrypt.compare(enteredPassword, this.password);
+  const hashed = this.get("password") as string;
+  return await bcrypt.compare(enteredPassword, hashed);
 };
 
 userSchema.methods.getSignedJwtToken = function (this: IUser): string {

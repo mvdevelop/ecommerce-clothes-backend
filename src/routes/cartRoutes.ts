@@ -1,4 +1,4 @@
-import { Router } from "express";
+import { Router, Response } from "express";
 import User from "../models/User.js";
 import { protect } from "../middleware/auth.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
@@ -6,13 +6,18 @@ import { AuthRequest } from "../middleware/auth.js";
 
 const router = Router();
 
+const getParam = (value: string | string[] | undefined): string => {
+  if (Array.isArray(value)) return value[0] ?? "";
+  return value ?? "";
+};
+
 // @desc    Add product to cart
 // @route   POST /api/cart
 // @access  Private
 router.post(
   "/",
   protect,
-  asyncHandler(async (req: AuthRequest, res): Promise<void> => {
+  asyncHandler(async (req: AuthRequest, res: Response): Promise<void> => {
     const { productId, quantity = 1 } = req.body as { productId: string; quantity?: number };
 
     if (!productId) {
@@ -29,9 +34,9 @@ router.post(
     if (!user.cartData) user.cartData = {};
 
     if (user.cartData[productId]) {
-      user.cartData[productId] += quantity!;
+      user.cartData[productId] += quantity;
     } else {
-      user.cartData[productId] = quantity!;
+      user.cartData[productId] = quantity;
     }
 
     await user.save();
@@ -46,8 +51,8 @@ router.post(
 router.delete(
   "/:productId",
   protect,
-  asyncHandler(async (req: AuthRequest, res): Promise<void> => {
-    const { productId } = req.params;
+  asyncHandler(async (req: AuthRequest, res: Response): Promise<void> => {
+    const productId = getParam(req.params.productId);
 
     const user = await User.findById(req.user?._id);
     if (!user) {
@@ -73,8 +78,8 @@ router.delete(
 router.put(
   "/:productId",
   protect,
-  asyncHandler(async (req: AuthRequest, res): Promise<void> => {
-    const { productId } = req.params;
+  asyncHandler(async (req: AuthRequest, res: Response): Promise<void> => {
+    const productId = getParam(req.params.productId);
     const { quantity } = req.body as { quantity: number };
 
     if (typeof quantity !== "number" || quantity < 0) {
@@ -111,7 +116,7 @@ router.put(
 router.get(
   "/",
   protect,
-  asyncHandler(async (req: AuthRequest, res): Promise<void> => {
+  asyncHandler(async (req: AuthRequest, res: Response): Promise<void> => {
     const user = await User.findById(req.user?._id);
     res.status(200).json({ success: true, data: user?.cartData || {} });
   })
@@ -123,7 +128,7 @@ router.get(
 router.delete(
   "/",
   protect,
-  asyncHandler(async (req: AuthRequest, res): Promise<void> => {
+  asyncHandler(async (req: AuthRequest, res: Response): Promise<void> => {
     const user = await User.findById(req.user?._id);
     if (user) {
       user.cartData = {};

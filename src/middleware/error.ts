@@ -39,13 +39,13 @@ export const errorHandler = (
   }
 
   // Mongoose duplicate key
-  if (error.code === 11000) {
+  if (error.code === "11000" || (error as any).code === 11000) {
     const message = "Duplicate field value entered";
     error = new ErrorResponse(message, 400) as typeof error;
   }
 
   // Mongoose validation error
-  if (error.name === "ValidationError") {
+  if (error.name === "ValidationError" || err.name === "ValidationError") {
     const message = Object.values((err as any).errors || {})
       .map((val: any) => val.message)
       .join(", ");
@@ -53,11 +53,11 @@ export const errorHandler = (
   }
 
   // JWT errors
-  if (error.name === "JsonWebTokenError") {
+  if (error.name === "JsonWebTokenError" || err.name === "JsonWebTokenError") {
     error = new ErrorResponse("Invalid token, please log in again", 401) as typeof error;
   }
 
-  if (error.name === "TokenExpiredError") {
+  if (error.name === "TokenExpiredError" || err.name === "TokenExpiredError") {
     error = new ErrorResponse("Token expired, please log in again", 401) as typeof error;
   }
 
