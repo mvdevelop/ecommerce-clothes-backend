@@ -1,13 +1,19 @@
 import ErrorResponse from "../utils/errorResponse.js";
-import asyncHandler from "express-async-handler";
+import logger from "../utils/logger.js";
 
 // Error response handler - centralizes error handling
 export const errorHandler = (err, req, res, next) => {
   let error = { ...err };
   error.message = err.message;
 
-  // Log error for dev (you can integrate with winston/morgan here)
-  console.error(err.stack.red);
+  // Log error with structured logger
+  logger.error({
+    message: err.message,
+    stack: err.stack,
+    method: req.method,
+    url: req.originalUrl,
+    ip: req.ip,
+  });
 
   // Mongoose bad ObjectId
   if (error.name === "CastError") {

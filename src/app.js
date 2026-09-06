@@ -15,10 +15,13 @@ dotenv.config();
 import userRoutes from "./routes/userRoutes.js";
 import productRoutes from "./routes/productRoutes.js";
 import cartRoutes from "./routes/cartRoutes.js";
+import uploadRoutes from "./routes/uploadRoutes.js";
+import orderRoutes from "./routes/orderRoutes.js";
 
 // Import middleware
 import errorHandler from "./middleware/error.js";
 import ErrorResponse from "./utils/errorResponse.js";
+import requestLogger from "./middleware/requestLogger.js";
 import connectDB from "./config/db.js";
 
 // Initialize app
@@ -29,6 +32,9 @@ connectDB();
 
 // Body parser
 app.use(express.json({ limit: "10kb" }));
+
+// Request logger (HTTP)
+app.use(requestLogger);
 
 // Security Middleware
 app.use(helmet());
@@ -59,6 +65,8 @@ app.use("/images", express.static(path.join(__dirname, "..", "upload", "images")
 app.use("/api/users", userRoutes);
 app.use("/api/products", productRoutes);
 app.use("/api/cart", cartRoutes);
+app.use("/api/upload", uploadRoutes);
+app.use("/api/orders", orderRoutes);
 
 // Health check endpoint
 app.get("/health", (req, res) => {

@@ -1,0 +1,47 @@
+# Node
+node_modules/
+npm-debug.log
+yarn-error.log
+yarn-debug.log
+pnpm-debug.log
+
+# Environment files
+.env
+.env.local
+.env.development
+.env.production
+.env.test
+.env.*.local
+
+# Build output
+dist/
+build/
+out/
+*.tsbuildinfo
+coverage/
+
+# Logs
+logs/
+*.log
+
+# Uploaded images
+upload/images/*
+!upload/images/.gitkeep
+
+# OS / Editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Testing
+.nyc_output/
+
+# Vercel
+.vercel
+
+# Miscellaneous
+*.tmp
+*.bak

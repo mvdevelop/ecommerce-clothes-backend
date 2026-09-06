@@ -1,4 +1,5 @@
 import app from "./app.js";
+import jwt from "jsonwebtoken";
 
 const PORT = process.env.PORT || 5000;
 
